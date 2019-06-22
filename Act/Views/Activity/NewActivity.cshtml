@@ -1,0 +1,53 @@
+@model Act.Models.Activity1
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <title>Add A Activity</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h2>Add An Activity</h2>
+        <div class="main">
+            <form asp-action="AddActivity" asp-controller="Activity" method="Post">
+                <input type="hidden" asp-for="UserId" value="@ViewBag.UserId">
+                <input type="hidden" asp-for="Planner" value="@ViewBag.Planner">
+           
+                
+                <span asp-validation-for="Title"></span>
+                <label asp-for="Title"></label>
+                <input asp-for="Title">
+                <br>
+                <span asp-validation-for="ActivityDate"></span>
+                <label asp-for="ActivityDate"></label>
+                <input asp-for="ActivityDate">
+                <br>
+                <span asp-validation-for="Time"></span>
+                <label asp-for="Time"></label>
+                <input type= "time" asp-for="Time">
+                <br>
+                <span asp-validation-for="Duration"></span>
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration">
+             
+                <span asp-validation-for="TimeLength"></span>
+                <select asp-for="TimeLength">
+                    <option value= "Hours">Hours</option>
+                    <option value= "Minutes">Minutes</option>
+                    <option value= "Days">Days</option>
+                </select>
+                <br>
+                <span asp-validation-for="Description"></span>
+                <label asp-for="Description" >Description:</label>
+                <textarea asp-for="Description" rows="10" cols="70"></textarea>
+                <br>
+                <input type="submit" value="Create">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+@using Act.Models 
+@model List<Act.Models.Activity1>
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="~/css/site.css"/>
+        <title>Activity | Dashboard </title>
+    </head>
+    <body>
+        <div class="wrapper">
+         <h1>Welcome @ViewBag.CurrentUser.FirstName</h1>
+            <div class="main">
+                <table>
+                    <thead>
+                        <th>Activity</th>
+                        <th>Date and Time</th>
+                        <th>Duration</th>
+                        <th>Planner Name</th>
+                        <th># of Participants</th>
+                        <th>Actions</th>
+                    </thead>
+                    <tbody>
+
+                        @{
+
+                            int flag = 0;
+                        foreach(var Activity in @ViewBag.AllActivities) {
+                            @if ((Activity.ActivityDate.Date == @ViewBag.Date) && (Activity.Time.TimeOfDay < @ViewBag.Time))
+
+                            {
+                                flag = 0;
+                                
+                            }
+                            @if(Activity.ActivityDate < @ViewBag.Date) {
+                                flag = 0;
+                                
+                            }
+                            @if ((Activity.ActivityDate.Date == @ViewBag.Date) && (Activity.Time.TimeOfDay > @ViewBag.Time)){
+                                flag = 1;
+                            }
+                            @if ((Activity.ActivityDate.Date > @ViewBag.Date)) {
+                                flag = 1;
+                            }
+                            @if ((Activity.ActivityDate.Date > @ViewBag.Date)&&(Activity.Time.TimeOfDay < @ViewBag.Time) ) {
+                                flag = 1;
+                            }
+                           
+                            else{
+                                flag = 0;
+                           
+
+                            }
+                            @if(flag == 1) {
+                                <tr>
+                                    <td>
+                                        <a href="Activity/@Activity.ActivityId">@Activity.Title</a>
+                                    </td>
+                                    <td>
+                                        @Activity.ActivityDate.ToString("MM/dd") @Activity.Time.ToString("hh:mm tt")
+                                    </td>
+                                    <td>
+                                        @Activity.Duration @Activity.TimeLength
+                                    </td>
+                                    <td>
+                                        @Activity.Planner
+                                    </td>
+                                    <td>
+                                        @Activity.Participants.Count
+                                    </td>
+                                    @if(@ViewBag.UserId == @Activity.UserId){
+                                        <td>
+                                        <a href="Delete/@Activity.ActivityId">Delete</a>
+                                        </td>
+                                    } 
+                                    else {
+                                        int Count = 0;
+                                        @foreach(var i in @Activity.Participants) {
+                                            @if(@i.User == @ViewBag.CurrentUser) {
+                                                Count = 1;
+                                            }
+                                        }
+                                            @if(Count == 1) {
+                                            <td>
+                                                <a href="Decline/@Activity.ActivityId">Leave</a>
+                                            </td>
+                                        } 
+                                        else {
+                                        <td>
+                                            <a href="RSVP/@Activity.ActivityId">Join</a>
+                                        </td> 
+                                        }
+                                    }
+                                </tr>
+                                }
+                            }
+                       
+                        }
+                        
+                    </tbody>
+                </table>
+                <a class="Newactlink" href="NewActivity">New Activity</a>
+            </div>
+        </div>
+    </body>
+</html>

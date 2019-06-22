@@ -1,0 +1,67 @@
+@using Act.Models 
+@model List<Act.Models.Activity1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <title>Activity Details</title>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main">  
+            <h1>@ViewBag.CurrentActivity.Title</h1>
+            <h3>Date: @ViewBag.CurrentActivity.ActivityDate.ToString("MMM dd, yyyy")</h3>
+            <h3>Event Coordinator: @ViewBag.CurrentActivity.Planner</h3>
+            <h3>Description:</h3><br>
+            <p>@ViewBag.CurrentActivity.Description</p>
+
+            @{
+                
+                <h3>Participants: </h3>
+                <ul>
+                
+                @foreach (var i in @ViewBag.CurrentActivity.Participants)
+                {
+                    <li>@i.User.FirstName</li>
+                }
+                    
+                </ul>
+
+                
+
+                    
+                        @if(@ViewBag.UserId == @ViewBag.CurrentActivity.UserId){
+                                <td>
+                                <a href="/Delete/@ViewBag.CurrentActivity.ActivityId">Delete</a>
+                                </td>
+                        } 
+                        else {
+                                int Count = 0;
+                                @foreach(var i in @ViewBag.CurrentActivity.Participants) {
+                                    @if(@i.User == @ViewBag.CurrentUser) {
+                                        Count = 1;
+                                    }
+                                }
+                                    @if(Count == 1) {
+                                    <td>
+                                        <a href="/Decline/@ViewBag.CurrentActivity.ActivityId">Leave</a>
+                                    </td>
+                                } 
+                                else {
+                                <td>
+                                    <a href="/RSVP/@ViewBag.CurrentActivity.ActivityId">Join</a>
+                                </td> 
+                                }
+                        }
+                    
+                
+
+            }
+        </div>
+    </div>
+</body>
+</html>
